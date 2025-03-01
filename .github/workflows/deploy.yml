@@ -49,7 +49,7 @@ jobs:
 
             echo "🗂️ Moviendo archivos al servidor web..."
             sudo rm -rf /var/www/html/mico/dist
-            sudo mv dist /var/www/html/mico/
+            sudo mv /var/www/html/mico/dist /var/www/html/mico/
 
             echo "🔑 Corrigiendo permisos..."
             sudo chown -R www-data:www-data /var/www/html/mico
