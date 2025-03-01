@@ -22,7 +22,7 @@ jobs:
 
       - name: 🚀 Desplegar en servidor
         run: |
-            ssh ubuntu@129.158.214.211 << 'EOF'
+            ssh -o StrictHostKeyChecking=no ubuntu@129.158.214.211 << 'EOF'
               set -e  # Detener ejecución en caso de error
         
               echo "📍 Verificando si el directorio del proyecto existe..."
