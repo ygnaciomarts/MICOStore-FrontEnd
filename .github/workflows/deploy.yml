@@ -25,7 +25,6 @@ jobs:
           ssh ubuntu@129.158.214.211 << 'EOF'
             set -e  # Detener ejecución en caso de error
             
-            # Verificar si el directorio /mico existe, si no clonarlo
             if [ ! -d "/var/www/html/mico/.git" ]; then
               echo "📥 Clonando el repositorio por primera vez..."
               sudo rm -rf /var/www/html/mico
@@ -47,20 +46,19 @@ jobs:
             echo "🔨 Construyendo la aplicación..."
             sudo npm run build
 
-            echo "🗂️ Verificando que 'dist' existe..."
-            ls -la
-            if [ ! -d "dist" ]; then
-              echo "❌ ERROR: La carpeta 'dist' no fue creada. Verifica que 'npm run build' la está generando correctamente."
+            echo "🗂️ Verificando contenido de 'dist'..."
+            ls -la dist
+            if [ -z "$(ls -A dist)" ]; then
+              echo "❌ ERROR: La carpeta 'dist' está vacía. Revisa la configuración de 'npm run build'."
               exit 1
             fi
 
             echo "🔄 Ajustando permisos de 'dist' antes de moverla..."
             sudo chown -R ubuntu:ubuntu dist
 
-            echo "🗂️ Moviendo archivos al servidor web..."
+            echo "🗂️ Moviendo 'dist' al servidor web..."
             sudo rm -rf /var/www/html/mico/dist
-            sudo mkdir -p /var/www/html/mico/dist
-            sudo mv dist/* /var/www/html/mico/dist/
+            sudo mv dist /var/www/html/mico/
 
             echo "🔑 Corrigiendo permisos finales..."
             sudo chown -R www-data:www-data /var/www/html/mico
