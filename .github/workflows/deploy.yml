@@ -1,0 +1,29 @@
+name: Deploy Mico to Server
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cuando hay cambios en main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: 🚀 Conectar con el servidor y hacer deploy
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@$SERVER_IP << 'EOF'
+            cd /var/www/html/mico
+            git pull origin main
+            npm install
+            npm run build
+            sudo systemctl restart apache2
+          EOF
+          rm private_key
