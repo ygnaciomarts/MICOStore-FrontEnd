@@ -60,11 +60,17 @@ jobs:
               echo "📁 Contenido de 'dist' antes de mover:"
               ls -la dist
         
-              echo "🔄 Ajustando permisos de 'dist' antes de moverla..."
-              sudo chown -R ubuntu:ubuntu dist
+              echo "🔄 Ajustando permisos de archivos en 'dist'..."
+              sudo chmod -R 755 dist
+        
+              echo "🗂️ Verificando existencia de directorio de destino..."
+              if [ ! -d "/var/www/html/mico" ]; then
+                echo "❌ ERROR: El directorio /var/www/html/mico no existe."
+                exit 1
+              fi
         
               echo "🗂️ Moviendo 'dist' al servidor web..."
-              sudo rsync -av --delete dist/ /var/www/html/mico/
+              sudo rsync -av --progress --delete dist/ /var/www/html/mico/
         
               echo "🔑 Corrigiendo permisos finales..."
               sudo chown -R www-data:www-data /var/www/html/mico
