@@ -11,14 +11,14 @@ const Home = () => {
       name: 'Producto 1',
       description: 'Descripción del producto 1',
       price: 100,
-      imageUrl: 'https://images.unsplash.com/photo-1604679296873-71c7f2342ee8',
+      imageUrl: 'https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/c3/f7/6a/c3f76a82-5bc5-e291-e88e-56672a2b23f6/22UMGIM60461.rgb.jpg/500x500.png',
     },
     {
       id: 2,
       name: 'Producto 2',
       description: 'Descripción del producto 2',
       price: 200,
-      imageUrl: 'https://images.unsplash.com/photo-1587132249385-95341f0101b6',
+      imageUrl: 'https://ygnaciomarts.com/bandupshop/img/slider/Slider-PP_Reinaissance.png',
     },
     {
       id: 3,
