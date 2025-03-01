@@ -3,7 +3,7 @@ name: Deploy Mico
 on:
   push:
     branches:
-      - main  # Se ejecutará cuando hagas push a main
+      - main
 
 jobs:
   deploy:
@@ -27,7 +27,7 @@ jobs:
             git pull origin main
             npm install
             npm run build
-            sudo rm -rf /var/www/html/mico/*
+            sudo rm -rf /var/www/html/mico/dist
             sudo cp -r dist/* /var/www/html/mico/
             sudo chown -R www-data:www-data /var/www/html/mico
             sudo chmod -R 755 /var/www/html/mico
