@@ -31,6 +31,9 @@ jobs:
               sudo rm -rf /var/www/html/mico
               sudo git clone git@github.com:ygnaciomarts/Mico.git /var/www/html/mico
             else
+              echo "🔄 Configurando permisos seguros para Git..."
+              sudo git config --global --add safe.directory /var/www/html/mico
+
               echo "🔄 Actualizando código con git pull..."
               cd /var/www/html/mico
               sudo git reset --hard  # Evitar problemas con archivos no rastreados
