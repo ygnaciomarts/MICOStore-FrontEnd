@@ -31,8 +31,12 @@ jobs:
                 sudo rm -rf /var/www/html/mico
                 sudo git clone git@github.com:ygnaciomarts/Mico.git /var/www/html/mico
               else
+                echo "🔄 Corrigiendo permisos del repositorio..."
+                sudo chown -R ubuntu:ubuntu /var/www/html/mico
+                sudo chmod -R 755 /var/www/html/mico
+        
                 echo "🔄 Configurando permisos seguros para Git..."
-                git config --global --add safe.directory /var/www/html/mico  # 🔥 FIX AQUÍ 🔥
+                git config --global --add safe.directory /var/www/html/mico
         
                 echo "🔄 Actualizando código con git pull..."
                 cd /var/www/html/mico
