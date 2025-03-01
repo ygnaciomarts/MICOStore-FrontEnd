@@ -2,8 +2,8 @@ import React from 'react';
 import ProductCard from '../components/ProductCard';
 import { Container, Grid, Typography, Box } from '@mui/material';
 import Slider from 'react-slick';
+import QuickOffersSlider from '../components/QuickOfferSlider';
 
-// Estilos con sx
 const Home = () => {
   const products = [
     {
@@ -47,22 +47,20 @@ const Home = () => {
   };
 
   return (
-    <div style={{ width: '100%', overflow: 'hidden', backgroundColor: '#333' }}>
-      {/* Logo en la parte superior */}
+    <div style={{ width: '100%', overflow: 'hidden' }}>
+      <Grid container>
+        <QuickOffersSlider />
+      </Grid>
       <Box sx={{ width: '100%', textAlign: 'center', paddingTop: '40px' }}>
         <img
-          src={`${import.meta.env.BASE_URL}mico.svg`} alt="Logo"
+          src={`${import.meta.env.BASE_URL}mico-letras.png`} alt="MICO"
           style={{ width: '150px', marginBottom: '20px' }}
         />
-        <Typography variant="h2" sx={{ color: '#fff', fontWeight: 'bold', paddingBottom: '30px' }}>
-          MICO
-        </Typography>
       </Box>
 
-      {/* Sección de productos */}
       <Container sx={{ marginTop: '50px' }}>
-        <Typography variant="h4" gutterBottom sx={{ color: '#fff', marginBottom: '30px' }}>
-          Productos Destacados
+        <Typography variant="h5" gutterBottom sx={{ color: '#fff', marginBottom: '30px' }}>
+          Productos destacados
         </Typography>
 
         <Grid container spacing={4}>
@@ -74,7 +72,6 @@ const Home = () => {
         </Grid>
       </Container>
 
-      {/* Footer */}
       <footer style={{ textAlign: 'center', padding: '20px', backgroundColor: '#222', color: '#fff' }}>
         <Typography variant="body2" color="inherit">
           &copy; 2025 Mico. Todos los derechos reservados.
