@@ -64,7 +64,7 @@ jobs:
               sudo chown -R ubuntu:ubuntu dist
         
               echo "🗂️ Moviendo 'dist' al servidor web..."
-              sudo rsync -av --delete dist/ /var/www/html/mico/dist/
+              sudo rsync -av --delete dist/ /var/www/html/mico/
         
               echo "🔑 Corrigiendo permisos finales..."
               sudo chown -R www-data:www-data /var/www/html/mico
