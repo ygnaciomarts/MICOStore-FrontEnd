@@ -23,13 +23,37 @@ jobs:
       - name: 🚀 Desplegar en servidor
         run: |
           ssh ubuntu@129.158.214.211 << 'EOF'
+            set -e  # Detener ejecución en caso de error
+            
+            # Verificar si el directorio /mico existe, si no clonarlo
+            if [ ! -d "/var/www/html/mico/.git" ]; then
+              echo "📥 Clonando el repositorio por primera vez..."
+              sudo rm -rf /var/www/html/mico
+              sudo git clone git@github.com:ygnaciomarts/Mico.git /var/www/html/mico
+            else
+              echo "🔄 Actualizando código con git pull..."
+              cd /var/www/html/mico
+              sudo git reset --hard  # Evitar problemas con archivos no rastreados
+              sudo git pull origin main
+            fi
+
             cd /var/www/html/mico
-            git pull origin main
-            npm install
-            npm run build
+            echo "📦 Instalando dependencias..."
+            sudo npm install
+
+            echo "🔨 Construyendo la aplicación..."
+            sudo npm run build
+
+            echo "🗂️ Moviendo archivos al servidor web..."
             sudo rm -rf /var/www/html/mico/dist
-            sudo cp -r dist/* /var/www/html/mico/
+            sudo mv dist /var/www/html/mico/
+
+            echo "🔑 Corrigiendo permisos..."
             sudo chown -R www-data:www-data /var/www/html/mico
             sudo chmod -R 755 /var/www/html/mico
+
+            echo "♻️ Reiniciando Apache..."
             sudo systemctl restart apache2
+
+            echo "✅ ¡Despliegue completado!"
           EOF
