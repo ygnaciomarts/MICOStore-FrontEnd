@@ -1,17 +1,17 @@
 import React from 'react';
 import Home from './views/Home.jsx';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Actualiza los imports
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProductDetail from './views/ProductDetail.jsx'; 
 
-function App() {
+const App = () => {
   return (
-    <Router>
+    <BrowserRouter basename="/mico/dist">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/producto/:id" element={<ProductDetail />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
