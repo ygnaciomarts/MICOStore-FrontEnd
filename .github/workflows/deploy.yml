@@ -27,5 +27,9 @@ jobs:
             git pull origin main
             npm install
             npm run build
+            sudo rm -rf /var/www/html/mico/*
+            sudo cp -r dist/* /var/www/html/mico/
+            sudo chown -R www-data:www-data /var/www/html/mico
+            sudo chmod -R 755 /var/www/html/mico
             sudo systemctl restart apache2
           EOF
