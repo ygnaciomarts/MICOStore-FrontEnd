@@ -51,8 +51,7 @@ const Home = () => {
       {/* Logo en la parte superior */}
       <Box sx={{ width: '100%', textAlign: 'center', paddingTop: '40px' }}>
         <img
-          src="/src/assets/mico.svg"
-          alt="Logo"
+          src={`${import.meta.env.BASE_URL}src/assets/mico.svg`} alt="Logo"
           style={{ width: '150px', marginBottom: '20px' }}
         />
         <Typography variant="h2" sx={{ color: '#fff', fontWeight: 'bold', paddingBottom: '30px' }}>
