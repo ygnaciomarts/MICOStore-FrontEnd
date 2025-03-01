@@ -6,7 +6,7 @@ import ProductDetail from './views/ProductDetail.jsx';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/mico/dist">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetail />} />
