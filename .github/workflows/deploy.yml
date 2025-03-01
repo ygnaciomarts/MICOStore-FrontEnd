@@ -13,7 +13,7 @@ jobs:
       - name: 🔹 Clonar el repositorio
         uses: actions/checkout@v4
 
-      - name: 🔑 Configurar SSH (opcional si sigues usando SSH)
+      - name: 🔑 Configurar SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
@@ -44,13 +44,18 @@ jobs:
               git pull https://github.com/ygnaciomarts/Mico.git main
             fi
 
-            # Continúa con el proceso de construcción y despliegue
+            # Ajustando permisos del directorio antes de instalar dependencias
+            echo "🔑 Ajustando permisos del directorio de trabajo..."
+            sudo chown -R ubuntu:ubuntu /var/www/html/mico
+            sudo chmod -R 755 /var/www/html/mico
+
+            # Instalar dependencias
             cd /var/www/html/mico
             echo "📦 Instalando dependencias..."
-            npm install
+            sudo npm install
 
             echo "🔨 Construyendo la aplicación..."
-            npm run build || { echo "❌ ERROR: La compilación falló"; exit 1; }
+            sudo npm run build || { echo "❌ ERROR: La compilación falló"; exit 1; }
 
             echo "🗂️ Verificando existencia de 'dist'..."
             if [ ! -d "dist" ]; then
