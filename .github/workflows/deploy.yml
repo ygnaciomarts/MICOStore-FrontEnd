@@ -13,74 +13,66 @@ jobs:
       - name: 🔹 Clonar el repositorio
         uses: actions/checkout@v4
 
-      - name: 🔑 Configurar SSH
+      - name: 🔑 Configurar SSH (opcional si sigues usando SSH)
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          # Deshabilitar la verificación de la clave del servidor
-          echo "Host *" > ~/.ssh/config
-          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-          echo "  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+          ssh-keyscan -H 129.158.214.211 >> ~/.ssh/known_hosts
 
       - name: 🚀 Desplegar en servidor
         run: |
-            ssh -o StrictHostKeyChecking=no ubuntu@129.158.214.211 << 'EOF'
-              set -e  # Detener ejecución en caso de error
-        
-              echo "📍 Verificando si el directorio del proyecto existe..."
-              if [ ! -d "/var/www/html/mico/.git" ]; then
-                echo "📥 Clonando el repositorio por primera vez..."
-                sudo rm -rf /var/www/html/mico
-                sudo git clone git@github.com:ygnaciomarts/Mico.git /var/www/html/mico
-              else
-                echo "🔄 Corrigiendo permisos del repositorio..."
-                sudo chown -R ubuntu:ubuntu /var/www/html/mico
-                sudo chmod -R 755 /var/www/html/mico
-        
-                echo "🔄 Configurando permisos seguros para Git..."
-                git config --global --add safe.directory /var/www/html/mico
-        
-                echo "🔄 Actualizando código con git pull..."
-                cd /var/www/html/mico
-                git reset --hard
-                git pull origin main
-              fi
-        
-              cd /var/www/html/mico
-              echo "📦 Instalando dependencias..."
-              npm install
-        
-              echo "🔨 Construyendo la aplicación..."
-              npm run build || { echo "❌ ERROR: La compilación falló"; exit 1; }
-        
-              echo "🗂️ Verificando existencia de 'dist'..."
-              if [ ! -d "dist" ]; then
-                echo "❌ ERROR: 'dist' no se generó. Revisa los logs de 'npm run build'."
-                exit 1
-              fi
-        
-              echo "📁 Contenido de 'dist' antes de mover:"
-              ls -la dist
-        
-              echo "🔄 Ajustando permisos de archivos en 'dist'..."
-              sudo chmod -R 755 dist
-        
-              echo "🗂️ Verificando existencia de directorio de destino..."
-              if [ ! -d "/var/www/html/mico" ]; then
-                echo "❌ ERROR: El directorio /var/www/html/mico no existe."
-                exit 1
-              fi
-        
-              echo "🗂️ Moviendo 'dist' al servidor web..."
-              sudo rsync -av --progress --delete dist/ /var/www/html/mico/
-        
-              echo "🔑 Corrigiendo permisos finales..."
-              sudo chown -R www-data:www-data /var/www/html/mico
+          ssh ubuntu@129.158.214.211 << 'EOF'
+            set -e  # Detener ejecución en caso de error
+
+            echo "📍 Verificando si el directorio del proyecto existe..."
+            if [ ! -d "/var/www/html/mico/.git" ]; then
+              echo "📥 Clonando el repositorio por primera vez..."
+              sudo rm -rf /var/www/html/mico
+              sudo git clone https://github.com/ygnaciomarts/Mico.git /var/www/html/mico
+            else
+              echo "🔄 Corrigiendo permisos del repositorio..."
+              sudo chown -R ubuntu:ubuntu /var/www/html/mico
               sudo chmod -R 755 /var/www/html/mico
-        
-              echo "♻️ Reiniciando Apache..."
-              sudo systemctl restart apache2
-        
-              echo "✅ ¡Despliegue completado con éxito!"
-            EOF
+
+              echo "🔄 Configurando permisos seguros para Git..."
+              git config --global --add safe.directory /var/www/html/mico
+
+              echo "🔄 Actualizando código con git pull..."
+              cd /var/www/html/mico
+              git reset --hard
+              git pull https://github.com/ygnaciomarts/Mico.git main
+            fi
+
+            # Continúa con el proceso de construcción y despliegue
+            cd /var/www/html/mico
+            echo "📦 Instalando dependencias..."
+            npm install
+
+            echo "🔨 Construyendo la aplicación..."
+            npm run build || { echo "❌ ERROR: La compilación falló"; exit 1; }
+
+            echo "🗂️ Verificando existencia de 'dist'..."
+            if [ ! -d "dist" ]; then
+              echo "❌ ERROR: 'dist' no se generó. Revisa los logs de 'npm run build'."
+              exit 1
+            fi
+
+            echo "📁 Contenido de 'dist' antes de mover:"
+            ls -la dist
+
+            echo "🔄 Ajustando permisos de 'dist' antes de moverla..."
+            sudo chown -R ubuntu:ubuntu dist
+
+            echo "🗂️ Moviendo 'dist' al servidor web..."
+            sudo rsync -av --delete dist/ /var/www/html/mico/dist/
+
+            echo "🔑 Corrigiendo permisos finales..."
+            sudo chown -R www-data:www-data /var/www/html/mico
+            sudo chmod -R 755 /var/www/html/mico
+
+            echo "♻️ Reiniciando Apache..."
+            sudo systemctl restart apache2
+
+            echo "✅ ¡Despliegue completado con éxito!"
+          EOF
