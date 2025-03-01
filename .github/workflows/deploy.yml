@@ -47,20 +47,22 @@ jobs:
             echo "🔨 Construyendo la aplicación..."
             sudo npm run build
 
-            echo "🗂️ Listando archivos para verificar que 'dist' existe..."
+            echo "🗂️ Verificando que 'dist' existe..."
             ls -la
-
-            # Verificar si dist/ se generó correctamente
             if [ ! -d "dist" ]; then
               echo "❌ ERROR: La carpeta 'dist' no fue creada. Verifica que 'npm run build' la está generando correctamente."
               exit 1
             fi
 
+            echo "🔄 Ajustando permisos de 'dist' antes de moverla..."
+            sudo chown -R ubuntu:ubuntu dist
+
             echo "🗂️ Moviendo archivos al servidor web..."
             sudo rm -rf /var/www/html/mico/dist
-            sudo mv ./dist /var/www/html/mico/
+            sudo mkdir -p /var/www/html/mico/dist
+            sudo mv dist/* /var/www/html/mico/dist/
 
-            echo "🔑 Corrigiendo permisos..."
+            echo "🔑 Corrigiendo permisos finales..."
             sudo chown -R www-data:www-data /var/www/html/mico
             sudo chmod -R 755 /var/www/html/mico
 
