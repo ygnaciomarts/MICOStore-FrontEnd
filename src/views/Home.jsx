@@ -52,7 +52,7 @@ const Home = () => {
       <Grid container>
         <QuickOffersSlider />
       </Grid>
-      <Box sx={{ width: '100%', display: 'flex', textAlign: 'center', paddingTop: '40px' }}>
+      <Box sx={{ width: '100%', display: 'flex', textAlign: 'center', paddingTop: '40px', justifyContent: 'center' }}>
         <img src={MicoLogo} style={{ width: '50vh' }} alt="Mico" />
       </Box>
 
