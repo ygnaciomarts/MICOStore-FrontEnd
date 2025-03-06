@@ -12,7 +12,7 @@ const Home = () => {
       name: 'Producto 1',
       description: 'Descripción del producto 1',
       price: 100,
-      imageUrl: 'https://images.unsplash.com/photo-1586190840529-fb6f14fa26e0',
+      imageUrl: 'https://images.unsplash.com/photo-1586190840529-fb6f14fa26e',
     },
     {
       id: 2,
