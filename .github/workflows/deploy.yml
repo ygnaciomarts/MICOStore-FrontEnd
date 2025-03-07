@@ -1,4 +1,4 @@
-name: Deploy Mico
+name: Deploy MICOStoreFrontEnd
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
             if [ ! -d "/var/www/html/mico/.git" ]; then
               echo "📥 Clonando el repositorio por primera vez..."
               sudo rm -rf /var/www/html/mico
-              sudo git clone https://github.com/ygnaciomarts/Mico.git /var/www/html/mico
+              sudo git clone https://github.com/ygnaciomarts/MICOStoreFrontEnd.git /var/www/html/mico
             else
               echo "🔄 Corrigiendo permisos del repositorio..."
               sudo chown -R ubuntu:ubuntu /var/www/html/mico
@@ -41,7 +41,7 @@ jobs:
               echo "🔄 Actualizando código con git pull..."
               cd /var/www/html/mico
               git reset --hard
-              git pull https://github.com/ygnaciomarts/Mico.git main
+              git pull https://github.com/ygnaciomarts/MICOStoreFrontEnd.git main
             fi
 
             # Ajustando permisos del directorio antes de instalar dependencias
