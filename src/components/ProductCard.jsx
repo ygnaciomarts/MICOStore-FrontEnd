@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, CardMedia, Button, Box } from '@mui/mate
 
 const ProductCard = ({ product }) => {
   return (
-    <Card sx={{ maxWidth: 345, borderRadius: 2, boxShadow: 3 }}>
+    <Card sx={{ maxWidth: '90vh', borderRadius: 2, boxShadow: 3 }}>
       <CardMedia
         component="img"
         alt={product.name}
@@ -12,17 +12,17 @@ const ProductCard = ({ product }) => {
         sx={{ objectFit: 'cover' }}
       />
       <CardContent>
-        <Typography gutterBottom variant="h6" component="div" color="primary">
+        <Typography gutterBottom variant="h6" component="div">
           {product.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {product.description}
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
-          <Typography variant="h6" color="secondary">
+          <Typography variant="h6">
             ${product.price}
           </Typography>
-          <Button size="small" variant="contained" color="primary">
+          <Button size="small" variant="contained" color="secondary">
             Comprar
           </Button>
         </Box>

@@ -31,16 +31,18 @@ const QuickOffersSlider = () => {
                         key={index}
                         sx={{
                             width: "100vw",
-                            height: 50,
+                            height: 40,
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
                             textAlign: "center",
+                            borderRadius: 0
                         }}
                     >
                         <Link
                             href={offer.url}
                             underline="none"
+                            color="secondary"
                             sx={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -49,7 +51,7 @@ const QuickOffersSlider = () => {
                                 height: "100%",
                             }}
                         >
-                            <Typography variant="h6" sx={{ textAlign: "center", width: "100%" }}>
+                            <Typography variant="body1" sx={{ textAlign: "center", width: "100%" }}>
                                 {offer.title}
                             </Typography>
                         </Link>
