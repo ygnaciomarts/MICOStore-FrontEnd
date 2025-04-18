@@ -6,7 +6,7 @@ export default defineConfig({
   define: {
     __API__: JSON.stringify(
       process.env.NODE_ENV === 'production'
-        ? 'https://micostore-api.onrender.com'
+        ? 'https://shopmico-api-devl.up.railway.app'
         : 'http://localhost:8081'
     )
   },
