@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import ProductCard from '../components/ProductCard';
-import { 
-  Container, Grid, Typography, Box, TextField, IconButton, Drawer, List, ListItem, ListItemText 
+import {
+  Container, Grid, Typography, Box, TextField, IconButton, Drawer, List, ListItem, ListItemText,
+  LinearProgress,
+  CircularProgress
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useMediaQuery } from '@mui/material';
 import QuickOffersSlider from '../components/QuickOfferSlider';
 import MicoLogo from '../assets/mico-letras.png';
+import { AuthContext } from '../AuthContext';
+import { AccountBoxSharp, Person } from '@mui/icons-material';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useContext(AuthContext);
 
-  // Detectar tamaños de pantalla
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const isMediumScreen = useMediaQuery('(max-width:900px)');
 
@@ -32,74 +36,11 @@ const Home = () => {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '90vh' }}>
-      
-      {/* Encabezado con Logo, Barra de Búsqueda y Menú */}
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '20px',
-          backgroundColor: '#222'
-        }}
-      >
-        {/* Logo a la izquierda */}
-        <img
-          src={MicoLogo}
-          style={{ width: isSmallScreen ? '150px' : isMediumScreen ? '160px' : '200px', filter: 'invert(1)' }}
-          alt="MICO"
-        />
-
-        {/* Barra de búsqueda con tamaño dinámico */}
-        {!isSmallScreen && (
-          <TextField
-            variant="outlined"
-            placeholder="Buscar productos..."
-            sx={{ 
-              width: isMediumScreen ? '30%' : '40%',
-              backgroundColor: '#fff', 
-              borderRadius: '5px' 
-            }}
-          />
-        )}
-
-        {/* Iconos de búsqueda y menú a la derecha */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {isSmallScreen && (
-            <IconButton sx={{ color: '#fff', fontSize: 'large' }}>
-              <SearchIcon fontSize="large" />
-            </IconButton>
-          )}
-
-          <IconButton onClick={() => setMenuOpen(true)} sx={{ color: '#fff', fontSize: 'large' }}>
-            <MenuIcon fontSize="large" />
-          </IconButton>
-        </Box>
-      </Box>
-
-      {/* Sidebar (Menú de navegación) */}
-      <Drawer anchor="right" open={menuOpen} onClose={() => setMenuOpen(false)}>
-        <List sx={{ width: 400, height: '100vh', backgroundColor: '#333', color: '#fff' }}>
-          <ListItem button onClick={() => setMenuOpen(false)}>
-            <ListItemText primary="Inicio" />
-          </ListItem>
-          <ListItem button onClick={() => setMenuOpen(false)}>
-            <ListItemText primary="Productos" />
-          </ListItem>
-          <ListItem button onClick={() => setMenuOpen(false)}>
-            <ListItemText primary="Contacto" />
-          </ListItem>
-        </List>
-      </Drawer>
-
-      {/* Sección de Ofertas */}
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Grid container>
         <QuickOffersSlider />
       </Grid>
 
-      {/* Contenedor de Productos */}
       <Container sx={{ flexGrow: 1, marginTop: '30px' }}>
         <Typography variant="h6" gutterBottom sx={{ color: '#fff', marginBottom: '20px', fontWeight: 'bold' }}>
           Productos destacados
@@ -113,14 +54,13 @@ const Home = () => {
               </Grid>
             ))
           ) : (
-            <Typography variant="body1" sx={{ color: '#fff' }}>
-              Cargando productos...
-            </Typography>
+            <Box sx={{ width: '100%', m: 2 }}>
+              <CircularProgress color="secondary" />
+            </Box>
           )}
         </Grid>
       </Container>
 
-      {/* Footer pegado abajo */}
       <Box
         sx={{
           textAlign: 'center',

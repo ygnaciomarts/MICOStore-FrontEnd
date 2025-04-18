@@ -1,7 +1,12 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: "/mico/dist/",
   plugins: [react()],
+  server: {
+    proxy: {
+      '/auth': 'http://localhost:8081',
+      '/api': 'http://localhost:8081'
+    }
+  }
 });
