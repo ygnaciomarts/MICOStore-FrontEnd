@@ -24,7 +24,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:8081/api/products');
+        const response = await fetch(`${__API__}/api/products`);
         const data = await response.json();
         setProducts(data);
       } catch (error) {
