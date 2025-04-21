@@ -1,17 +1,61 @@
 import { Outlet } from "react-router-dom";
-import { Box, IconButton, Drawer, List, ListItem, ListItemText, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Box, IconButton, Drawer, List, ListItem, ListItemText, TextField, Typography, useMediaQuery, Button, Menu, MenuItem, Grid } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Person from "@mui/icons-material/Person";
 import { useState, useContext } from "react";
 import MicoLogo from '../assets/mico-letras.png';
 import { AuthContext } from '../AuthContext';
+import { useNavigate } from "react-router-dom";
+import QuickOffersSlider from "./QuickOfferSlider";
+import Footer from "./Footer";
 
 const MainLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const isMediumScreen = useMediaQuery("(max-width:960px)");
   const { user } = useContext(AuthContext);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const userButton = user?.username ? (
+    <>
+      <Button
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        sx={{ color: '#fff', textTransform: 'none', display: 'flex', alignItems: 'center', gap: 1 }}
+      >
+        <Person fontSize="small" />
+        {user?.username}
+      </Button>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+        PaperProps={{
+          sx: {
+            zIndex: 1500,
+            fontSize: '0.9rem'
+          }
+        }}
+      >
+        <MenuItem dense onClick={handleLogout}>Cerrar sesión</MenuItem>
+      </Menu>
+    </>
+  ) : (
+    <Button
+      onClick={() => navigate('/login')}
+      sx={{ color: '#fff', textTransform: 'none', display: 'flex', alignItems: 'center', gap: 1 }}
+    >
+      <Person fontSize="small" />
+      Inicia sesión
+    </Button>
+  );
 
   return (
     <>
@@ -26,11 +70,13 @@ const MainLayout = () => {
         }}
       >
         {/* Logo a la izquierda */}
-        <img
-          src={MicoLogo}
-          style={{ width: isSmallScreen ? '150px' : isMediumScreen ? '160px' : '200px', filter: 'invert(1)' }}
-          alt="MICO"
-        />
+        <Box onClick={() => navigate('/')} sx={{ cursor: 'pointer' }}>
+          <img
+            src={MicoLogo}
+            style={{ width: isSmallScreen ? '150px' : isMediumScreen ? '160px' : '200px', filter: 'invert(1)' }}
+            alt="MICO"
+          />
+        </Box>
 
         {/* Barra de búsqueda con tamaño dinámico */}
         {!isSmallScreen && (
@@ -52,23 +98,7 @@ const MainLayout = () => {
             </IconButton>
           )}
 
-          {user?.username && (
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.7,
-                backgroundColor: '#444',
-                padding: '6px 12px',
-                borderRadius: '20px'
-              }}
-            >
-              <Person sx={{ color: '#fff' }} />
-              <Typography variant="subtitle1" sx={{ color: '#fff', fontWeight: 'bold' }}>
-                {user.username}
-              </Typography>
-            </Box>
-          )}
+          {userButton}
 
           <IconButton onClick={() => setMenuOpen(true)} sx={{ color: '#fff', fontSize: 'large' }}>
             <MenuIcon fontSize="large" />
@@ -91,9 +121,15 @@ const MainLayout = () => {
         </List>
       </Drawer>
 
+      <Box>
+        <QuickOffersSlider />
+      </Box>
+
       <main style={{ padding: "1rem" }}>
         <Outlet />
       </main>
+
+      <Footer />
     </>
   );
 };

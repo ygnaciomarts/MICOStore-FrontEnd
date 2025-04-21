@@ -3,7 +3,8 @@ import ProductCard from '../components/ProductCard';
 import {
   Container, Grid, Typography, Box, TextField, IconButton, Drawer, List, ListItem, ListItemText,
   LinearProgress,
-  CircularProgress
+  CircularProgress,
+  Skeleton
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -37,11 +38,7 @@ const Home = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Grid container>
-        <QuickOffersSlider />
-      </Grid>
-
-      <Container sx={{ flexGrow: 1, marginTop: '30px' }}>
+      <Container sx={{ flexGrow: 1, mt: '30px', mb: '30px' }}>
         <Typography variant="h6" gutterBottom sx={{ color: '#fff', marginBottom: '20px', fontWeight: 'bold' }}>
           Productos destacados
         </Typography>
@@ -54,26 +51,18 @@ const Home = () => {
               </Grid>
             ))
           ) : (
-            <Box sx={{ width: '100%', m: 2 }}>
-              <CircularProgress color="secondary" />
-            </Box>
+            [1, 2, 3, 4].map((n) => (
+              <Grid item sm={6} md={3} key={n}>
+                <Box sx={{ backgroundColor: '#fff', borderRadius: 2, p: 2 }}>
+                  <Skeleton variant="rectangular" height={140} />
+                  <Skeleton variant="text" sx={{ mt: 1 }} />
+                  <Skeleton variant="text" width="60%" />
+                </Box>
+              </Grid>
+            ))
           )}
         </Grid>
       </Container>
-
-      <Box
-        sx={{
-          textAlign: 'center',
-          padding: '20px',
-          backgroundColor: '#222',
-          color: '#fff',
-          marginTop: 'auto'
-        }}
-      >
-        <Typography variant="body2" color="inherit">
-          &copy; 2025 MICO. Todos los derechos reservados.
-        </Typography>
-      </Box>
     </Box>
   );
 };
