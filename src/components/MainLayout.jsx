@@ -3,7 +3,7 @@ import { Box, IconButton, Drawer, List, ListItem, ListItemText, TextField, Typog
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Person from "@mui/icons-material/Person";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import MicoLogo from '../assets/mico-letras.png';
 import { AuthContext } from '../AuthContext';
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,10 @@ const MainLayout = () => {
     logout();
     navigate('/login');
   };
+
+  useEffect(() => {
+    setAnchorEl(null); // cierra el menú si hay un nuevo usuario
+  }, [user]);
 
   const userButton = user?.username ? (
     <>
