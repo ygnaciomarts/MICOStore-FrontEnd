@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  base: '/',
   plugins: [react()],
   define: {
     __API__: JSON.stringify(
@@ -9,6 +10,9 @@ export default defineConfig({
         ? 'https://micostore-api.onrender.com'
         : 'http://localhost:8081'
     )
+  },
+  build: {
+    outDir: 'dist'
   },
   server: {
     proxy: {
