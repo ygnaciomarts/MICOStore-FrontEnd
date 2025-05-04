@@ -38,7 +38,7 @@ const Home = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Container sx={{ flexGrow: 1, mt: '30px', mb: '30px' }}>
+      <Container sx={{ flexGrow: 1, mt: '15px', mb: '30px' }}>
         <Typography variant="h6" gutterBottom sx={{ color: '#fff', marginBottom: '20px', fontWeight: 'bold' }}>
           Productos destacados
         </Typography>

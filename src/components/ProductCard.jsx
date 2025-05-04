@@ -5,10 +5,11 @@ import { Card, CardContent, Typography, CardMedia, Button, Box } from '@mui/mate
 const ProductCard = ({ product }) => {
   return (
     <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-      <Card sx={{ maxWidth: '90vh', borderRadius: 2, boxShadow: 3 }}>
+      <Card sx={{ maxWidth: '100vh', borderRadius: 2, boxShadow: 3 }}>
         <CardMedia
           component="img"
           alt={product.name}
+          width="200"
           height="200"
           image={product.imageUrl}
           sx={{ objectFit: 'cover' }}
@@ -17,7 +18,7 @@ const ProductCard = ({ product }) => {
           <Typography gutterBottom variant="h6" component="div">
             {product.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" sx={{ maxHeight: '10vh', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {product.description}
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>

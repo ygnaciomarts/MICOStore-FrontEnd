@@ -13,7 +13,7 @@ const offers = [
 const QuickOffersSlider = () => {
     const settings = {
         infinite: true,
-        speed: 500,
+        speed: 600,
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
@@ -24,14 +24,14 @@ const QuickOffersSlider = () => {
     };
 
     return (
-        <Grid container sx={{ width: "100vw", overflow: "hidden" }}>
+        <Grid container sx={{ width: "100%", overflow: "hidden" }}>
             <Slider {...settings} style={{ width: "100%" }}>
                 {offers.map((offer, index) => (
                     <Card
                         key={index}
                         sx={{
                             width: "100vw",
-                            height: 40,
+                            height: 25,
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -51,7 +51,7 @@ const QuickOffersSlider = () => {
                                 height: "100%",
                             }}
                         >
-                            <Typography variant="body1" sx={{ textAlign: "center", width: "100%" }}>
+                            <Typography variant="body2" sx={{ textAlign: "center", width: "100%", fontSize: "0.9rem" }}>
                                 {offer.title}
                             </Typography>
                         </Link>

@@ -25,7 +25,7 @@ const MainLayout = () => {
   };
 
   useEffect(() => {
-    setAnchorEl(null); // cierra el menú si hay un nuevo usuario
+    setAnchorEl(null);
   }, [user]);
 
   const userButton = user?.username ? (
@@ -63,6 +63,10 @@ const MainLayout = () => {
 
   return (
     <>
+      <Box>
+        <QuickOffersSlider />
+      </Box>
+
       <Box
         sx={{
           width: '100%',
@@ -73,16 +77,14 @@ const MainLayout = () => {
           backgroundColor: '#222'
         }}
       >
-        {/* Logo a la izquierda */}
         <Box onClick={() => navigate('/')} sx={{ cursor: 'pointer' }}>
           <img
             src={MicoLogo}
-            style={{ width: isSmallScreen ? '150px' : isMediumScreen ? '160px' : '200px', filter: 'invert(1)' }}
+            style={{ width: isSmallScreen ? '100px' : isMediumScreen ? '120px' : '140px', filter: 'invert(1)' }}
             alt="MICO"
           />
         </Box>
 
-        {/* Barra de búsqueda con tamaño dinámico */}
         {!isSmallScreen && (
           <TextField
             variant="outlined"
@@ -92,6 +94,7 @@ const MainLayout = () => {
               backgroundColor: '#fff',
               borderRadius: '5px'
             }}
+            size="small"
           />
         )}
 
@@ -110,7 +113,6 @@ const MainLayout = () => {
         </Box>
       </Box>
 
-      {/* Sidebar (Menú de navegación) */}
       <Drawer anchor="right" open={menuOpen} onClose={() => setMenuOpen(false)}>
         <List sx={{ width: 400, height: '100vh', backgroundColor: '#333', color: '#fff' }}>
           <ListItem button onClick={() => setMenuOpen(false)}>
@@ -124,10 +126,6 @@ const MainLayout = () => {
           </ListItem>
         </List>
       </Drawer>
-
-      <Box>
-        <QuickOffersSlider />
-      </Box>
 
       <main style={{ padding: "1rem" }}>
         <Outlet />
