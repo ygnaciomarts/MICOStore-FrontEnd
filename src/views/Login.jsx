@@ -18,8 +18,8 @@ const LoginView = () => {
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('devl');
+    const [password, setPassword] = useState('devl');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -82,6 +82,7 @@ const LoginView = () => {
                                 <TextField
                                     fullWidth
                                     label="Usuario"
+                                    placeholder="devl"
                                     margin="normal"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
@@ -90,6 +91,7 @@ const LoginView = () => {
                                     fullWidth
                                     label="Contraseña"
                                     type="password"
+                                    placeholder="devl"
                                     margin="normal"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -109,16 +111,6 @@ const LoginView = () => {
                     )}
                 </Box>
             </Box>
-
-            <Card sx={{ width: 400, bgcolor: '#e3f2fd', borderLeft: '5px solid #1976d2' }}>
-                <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                        <b>Tip: para probar, usa:</b> <br />
-                        <b>Usuario:</b> admin<br />
-                        <b>Contraseña:</b> 1234
-                    </Typography>
-                </CardContent>
-            </Card>
         </Box>
     );
 };
