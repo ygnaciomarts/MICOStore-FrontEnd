@@ -6,6 +6,9 @@ import ProductDetails from './views/ProductDetails.jsx';
 import LoginView from './views/Login.jsx';
 import RegisterView from './views/Register.jsx';
 import MainLayout from '../src/components/MainLayout.jsx';
+import AdminUsers from './views/admin/Dashboard';
+import AdminProducts from './views/admin/Products';
+
 
 function App() {
   return (
@@ -16,6 +19,8 @@ function App() {
           <Route path="/register" element={<RegisterView />} />
           <Route path="/" element={<HomeView />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/admin/dashboard" element={<AdminUsers />} />
+          <Route path="/admin/products" element={<AdminProducts />} />
         </Route>
       </Routes>
     </Router>

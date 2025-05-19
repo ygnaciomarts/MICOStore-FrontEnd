@@ -17,7 +17,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': 'http://localhost:8081',
-      '/api': 'http://localhost:8081'
+      '/api': 'http://localhost:8081',
+      '/admin': 'http://localhost:8081'
     }
   }
 });

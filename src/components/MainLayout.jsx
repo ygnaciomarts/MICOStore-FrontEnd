@@ -24,6 +24,14 @@ const MainLayout = () => {
     navigate('/login');
   };
 
+  const handleAdmin = () => {
+    navigate('/admin/dashboard');
+  };
+
+  const handleProducts = () => {
+    navigate('/admin/products');
+  };
+
   useEffect(() => {
     setAnchorEl(null);
   }, [user]);
@@ -48,6 +56,8 @@ const MainLayout = () => {
           }
         }}
       >
+        <MenuItem dense onClick={handleAdmin}>Admin tools</MenuItem>
+        <MenuItem dense onClick={handleProducts}>Product tools</MenuItem>
         <MenuItem dense onClick={handleLogout}>Cerrar sesión</MenuItem>
       </Menu>
     </>
