@@ -13,6 +13,7 @@ import QuickOffersSlider from '../components/QuickOfferSlider';
 import MicoLogo from '../assets/mico-letras.png';
 import { AuthContext } from '../AuthContext';
 import { AccountBoxSharp, Person } from '@mui/icons-material';
+import HighlightTitle from '../util/HighlightTitle';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -39,9 +40,7 @@ const Home = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Container sx={{ flexGrow: 1, mt: '15px', mb: '30px' }}>
-        <Typography variant="h6" gutterBottom sx={{ color: '#fff', marginBottom: '20px', fontWeight: 'bold' }}>
-          Productos destacados
-        </Typography>
+      <HighlightTitle />
 
         <Grid container spacing={2}>
           {products.length > 0 ? (

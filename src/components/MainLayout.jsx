@@ -1,5 +1,20 @@
 import { Outlet } from "react-router-dom";
-import { Box, IconButton, Drawer, List, ListItem, ListItemText, TextField, Typography, useMediaQuery, Button, Menu, MenuItem, Grid } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  TextField,
+  Button,
+  Menu,
+  MenuItem,
+  useMediaQuery,
+  Snackbar,
+  Alert,
+  InputAdornment,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Person from "@mui/icons-material/Person";
@@ -9,15 +24,49 @@ import { AuthContext } from '../AuthContext';
 import { useNavigate } from "react-router-dom";
 import QuickOffersSlider from "./QuickOfferSlider";
 import Footer from "./Footer";
+import { AccountCircle } from "@mui/icons-material";
+import { SearchCheck, Search, User } from "lucide-react";
 
 const MainLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const isMediumScreen = useMediaQuery("(max-width:960px)");
-  const { user } = useContext(AuthContext);
+  const { user, sessionExpired, clearSessionExpired, logout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const { logout } = useContext(AuthContext);
+  const [sessionExpiredAlert, setSessionExpiredAlert] = useState(false);
+
+  // Estado para ocultar slider según scroll
+  const [hideSlider, setHideSlider] = useState(false);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop && scrollTop > 50) {
+        setHideSlider(true);
+      } else if (scrollTop < lastScrollTop) {
+        setHideSlider(false);
+      }
+      setLastScrollTop(scrollTop <= 0 ? 0 : scrollTop);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollTop]);
+
+  useEffect(() => {
+    setAnchorEl(null);
+  }, [user]);
+
+  useEffect(() => {
+    if (sessionExpired) {
+      setSessionExpiredAlert(true);
+      clearSessionExpired();
+      logout();
+      navigate('/login');
+    }
+  }, [sessionExpired, clearSessionExpired, logout, navigate]);
 
   const handleLogout = () => {
     logout();
@@ -32,17 +81,13 @@ const MainLayout = () => {
     navigate('/admin/products');
   };
 
-  useEffect(() => {
-    setAnchorEl(null);
-  }, [user]);
-
   const userButton = user?.username ? (
     <>
       <Button
         onClick={(e) => setAnchorEl(e.currentTarget)}
         sx={{ color: '#fff', textTransform: 'none', display: 'flex', alignItems: 'center', gap: 1 }}
       >
-        <Person fontSize="small" />
+        <User />
         {user?.username}
       </Button>
       <Menu
@@ -66,49 +111,82 @@ const MainLayout = () => {
       onClick={() => navigate('/login')}
       sx={{ color: '#fff', textTransform: 'none', display: 'flex', alignItems: 'center', gap: 1 }}
     >
-      <Person fontSize="small" />
+      <User />
       Inicia sesión
     </Button>
   );
 
   return (
-    <>
-      <Box>
-        <QuickOffersSlider />
-      </Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh"
+      }}
+    >
+      {/* Solo mostramos el slider si hideSlider es false */}
+      {!hideSlider && (
+        <Box>
+          <QuickOffersSlider />
+        </Box>
+      )}
 
       <Box
+        component="header"
         sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1300,
           width: '100%',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '20px',
-          backgroundColor: '#222'
+          justifyContent: 'center', // Centra el logo
+          py: 5,
+          backgroundColor: '#222',
+          flexShrink: 0,
         }}
       >
-        <Box onClick={() => navigate('/')} sx={{ cursor: 'pointer' }}>
+        {/* Caja para search a la izquierda */}
+        {!isSmallScreen && (
+          <Box sx={{ position: 'absolute', left: 120, maxWidth: '250px', width: isMediumScreen ? '10%' : '20%' }}>
+            <TextField
+              variant="outlined"
+              placeholder="Buscar productos..."
+              sx={{
+                width: '100%',
+                backgroundColor: '#fff',
+                borderRadius: '5px',
+              }}
+              size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Search />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Box>
+        )}
+
+        {/* Logo centrado */}
+        <Box
+          onClick={() => navigate('/')}
+          sx={{ cursor: 'pointer' }}
+        >
           <img
             src={MicoLogo}
-            style={{ width: isSmallScreen ? '100px' : isMediumScreen ? '120px' : '140px', filter: 'invert(1)' }}
+            style={{
+              width: isSmallScreen ? '110px' : isMediumScreen ? '140px' : '170px',
+              filter: 'invert(1)',
+              display: 'block'
+            }}
             alt="MICO"
           />
         </Box>
 
-        {!isSmallScreen && (
-          <TextField
-            variant="outlined"
-            placeholder="Buscar productos..."
-            sx={{
-              width: isMediumScreen ? '30%' : '40%',
-              backgroundColor: '#fff',
-              borderRadius: '5px'
-            }}
-            size="small"
-          />
-        )}
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        {/* Botones y menú a la derecha */}
+        <Box sx={{ position: 'absolute', right: 120, display: 'flex', alignItems: 'center', gap: 2 }}>
           {isSmallScreen && (
             <IconButton sx={{ color: '#fff', fontSize: 'large' }}>
               <SearchIcon fontSize="large" />
@@ -137,12 +215,30 @@ const MainLayout = () => {
         </List>
       </Drawer>
 
-      <main style={{ padding: "1rem" }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          padding: "2rem",
+          minHeight: 0,
+        }}
+      >
         <Outlet />
-      </main>
+      </Box>
+
+      <Snackbar
+        open={sessionExpiredAlert}
+        autoHideDuration={6000}
+        onClose={() => setSessionExpiredAlert(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert severity="warning" sx={{ width: '100%' }} onClose={() => setSessionExpiredAlert(false)}>
+          Tu sesión ha expirado. Por favor, inicia sesión nuevamente.
+        </Alert>
+      </Snackbar>
 
       <Footer />
-    </>
+    </Box>
   );
 };
 
