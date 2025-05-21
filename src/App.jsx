@@ -8,7 +8,7 @@ import RegisterView from './views/Register.jsx';
 import MainLayout from '../src/components/MainLayout.jsx';
 import AdminUsers from './views/admin/Dashboard';
 import AdminProducts from './views/admin/Products';
-import useTokenValidation from './hooks/useTokenValidation.js';
+import useTokenValidation from './hooks/UseTokenValidation.js';
 
 function App() {
   useTokenValidation();
