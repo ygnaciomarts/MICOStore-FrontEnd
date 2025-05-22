@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 import QuickOffersSlider from "./QuickOfferSlider";
 import Footer from "./Footer";
 import { AccountCircle } from "@mui/icons-material";
-import { SearchCheck, Search, User } from "lucide-react";
+import { SearchCheck, Search, User, ShoppingBag, ShoppingCart } from "lucide-react";
 
 const MainLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -36,7 +36,6 @@ const MainLayout = () => {
   const navigate = useNavigate();
   const [sessionExpiredAlert, setSessionExpiredAlert] = useState(false);
 
-  // Estado para ocultar slider según scroll
   const [hideSlider, setHideSlider] = useState(false);
   const [lastScrollTop, setLastScrollTop] = useState(0);
 
@@ -107,13 +106,9 @@ const MainLayout = () => {
       </Menu>
     </>
   ) : (
-    <Button
-      onClick={() => navigate('/login')}
-      sx={{ color: '#fff', textTransform: 'none', display: 'flex', alignItems: 'center', gap: 1 }}
-    >
+    <IconButton onClick={() => navigate('/login')} sx={{ color: '#fff', fontSize: 'large' }}>
       <User />
-      Inicia sesión
-    </Button>
+    </IconButton>
   );
 
   return (
@@ -124,7 +119,6 @@ const MainLayout = () => {
         minHeight: "100vh"
       }}
     >
-      {/* Solo mostramos el slider si hideSlider es false */}
       {!hideSlider && (
         <Box>
           <QuickOffersSlider />
@@ -140,18 +134,17 @@ const MainLayout = () => {
           width: '100%',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center', // Centra el logo
-          py: 5,
+          justifyContent: 'center',
+          py: 4,
           backgroundColor: '#222',
           flexShrink: 0,
         }}
       >
-        {/* Caja para search a la izquierda */}
         {!isSmallScreen && (
-          <Box sx={{ position: 'absolute', left: 120, maxWidth: '250px', width: isMediumScreen ? '10%' : '20%' }}>
+          <Box sx={{ position: 'absolute', left: 180, maxWidth: '250px', width: isMediumScreen ? '10%' : '20%' }}>
             <TextField
               variant="outlined"
-              placeholder="Buscar productos..."
+              placeholder="Buscar productos"
               sx={{
                 width: '100%',
                 backgroundColor: '#fff',
@@ -169,7 +162,6 @@ const MainLayout = () => {
           </Box>
         )}
 
-        {/* Logo centrado */}
         <Box
           onClick={() => navigate('/')}
           sx={{ cursor: 'pointer' }}
@@ -185,8 +177,7 @@ const MainLayout = () => {
           />
         </Box>
 
-        {/* Botones y menú a la derecha */}
-        <Box sx={{ position: 'absolute', right: 120, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ position: 'absolute', right: 180, display: 'flex', alignItems: 'center', gap: 2 }}>
           {isSmallScreen && (
             <IconButton sx={{ color: '#fff', fontSize: 'large' }}>
               <SearchIcon fontSize="large" />
@@ -196,11 +187,12 @@ const MainLayout = () => {
           {userButton}
 
           <IconButton onClick={() => setMenuOpen(true)} sx={{ color: '#fff', fontSize: 'large' }}>
-            <MenuIcon fontSize="large" />
+            <ShoppingCart />
           </IconButton>
         </Box>
       </Box>
 
+      {/*
       <Drawer anchor="right" open={menuOpen} onClose={() => setMenuOpen(false)}>
         <List sx={{ width: 400, height: '100vh', backgroundColor: '#333', color: '#fff' }}>
           <ListItem button onClick={() => setMenuOpen(false)}>
@@ -214,6 +206,7 @@ const MainLayout = () => {
           </ListItem>
         </List>
       </Drawer>
+      */}
 
       <Box
         component="main"

@@ -14,6 +14,7 @@ import MicoLogo from '../assets/mico-letras.png';
 import { AuthContext } from '../AuthContext';
 import { AccountBoxSharp, Person } from '@mui/icons-material';
 import HighlightTitle from '../util/HighlightTitle';
+import ProductCarousel from '../components/ProductCarousel';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -38,30 +39,34 @@ const Home = () => {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Container sx={{ flexGrow: 1, mt: '15px', mb: '30px' }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        mt: '15px',
+        mb: '30px',
+        width: '100%',
+        px: 18
+      }}
+    >
       <HighlightTitle />
 
+      {products.length > 0 ? (
+        <Box sx={{ maxWidth: '100%', margin: '0 auto' }}>
+          <ProductCarousel products={products} />
+        </Box>
+      ) : (
         <Grid container spacing={2}>
-          {products.length > 0 ? (
-            products.map((product) => (
-              <Grid item sm={6} md={3} key={product.id}>
-                <ProductCard product={product} />
-              </Grid>
-            ))
-          ) : (
-            [1, 2, 3, 4].map((n) => (
-              <Grid item sm={6} md={3} key={n}>
-                <Box sx={{ backgroundColor: '#fff', borderRadius: 2, p: 2 }}>
-                  <Skeleton variant="rectangular" height={140} />
-                  <Skeleton variant="text" sx={{ mt: 1 }} />
-                  <Skeleton variant="text" width="60%" />
-                </Box>
-              </Grid>
-            ))
-          )}
+          {[1, 2, 3, 4].map((n) => (
+            <Grid item sm={6} md={3} key={n}>
+              <Box sx={{ backgroundColor: '#fff', borderRadius: 2, p: 2 }}>
+                <Skeleton variant="rectangular" height={140} />
+                <Skeleton variant="text" sx={{ mt: 1 }} />
+                <Skeleton variant="text" width="60%" />
+              </Box>
+            </Grid>
+          ))}
         </Grid>
-      </Container>
+      )}
     </Box>
   );
 };

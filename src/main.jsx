@@ -1,3 +1,5 @@
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './util/theme.js';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
@@ -6,8 +8,10 @@ import { AuthProvider } from './AuthContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

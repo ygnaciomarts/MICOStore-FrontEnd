@@ -11,6 +11,11 @@ const AuthProvider = ({ children }) => {
   const clearSessionExpired = () => setSessionExpired(false);
 
   useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (!token && storedToken) {
+      setToken(storedToken);
+      return;
+    }
     console.log("AuthContext useEffect triggered. Token:", token); 
 
     const checkToken = () => {

@@ -3,12 +3,12 @@ import { Box, Typography } from "@mui/material";
 const UnderlineSVG = () => {
     return (
         <svg
-            width="200"
+            width="178"
             height="10"
             viewBox="0 0 200 10"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            stroke="var(--marker-color, #f0652b)" // Usa negro (#000) como color por defecto
+            stroke="var(--marker-color, #f0652b)"
             strokeWidth="6"
             strokeLinecap="round"
         >
@@ -22,34 +22,29 @@ const HighlightTitle = () => {
         <Box sx={{ position: "relative", textAlign: "left", mb: 4 }}>
             <Box sx={{ display: "inline-block", position: "relative" }}>
                 <Typography
-                    variant="h5"
+                    variant="h4"
                     sx={{
-                        fontWeight: 700,
+                        fontWeight: 600,
                         fontFamily: "'Inter', sans-serif",
                         zIndex: 2,
                         position: "relative",
+                        letterSpacing: "-0.02em",
+                        fontSize: '30px'
                     }}
                 >
-                    Productos destacados
+                    Personaliza tus prendas
                 </Typography>
                 <Box
                     sx={{
                         position: "absolute",
-                        left: 0, // Alinea el SVG al inicio del contenedor
-                        bottom: "-15px", // Ajusta la distancia entre el texto y el SVG
-                        width: "100%", // Asegura que el SVG ocupe el 100% del ancho del título
+                        left: 0,
+                        bottom: "-15px",
+                        width: "100%"
                     }}
                 >
                     <UnderlineSVG />
                 </Box>
             </Box>
-
-            <Typography
-                variant="subtitle1"
-                sx={{ mt: 2, fontSize: "1rem" }}
-            >
-                Descubre nuestros productos más populares
-            </Typography>
         </Box>
     );
 };

@@ -31,7 +31,7 @@ const QuickOffersSlider = () => {
                         key={index}
                         sx={{
                             width: "100vw",
-                            height: 25,
+                            height: 30,
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -42,7 +42,7 @@ const QuickOffersSlider = () => {
                         <Link
                             href={offer.url}
                             underline="none"
-                            color="secondary"
+                            color="black"
                             sx={{
                                 display: "flex",
                                 justifyContent: "center",
