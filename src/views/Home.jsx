@@ -15,6 +15,139 @@ import { AuthContext } from '../AuthContext';
 import { AccountBoxSharp, Person } from '@mui/icons-material';
 import HighlightTitle from '../util/HighlightTitle';
 import ProductCarousel from '../components/ProductCarousel';
+import Slider from "react-slick";
+
+const banners = [
+  {
+    src: "/src/assets/mico1.png",
+    title: "Tu tienda de confianza",
+    description: "Compra rápido y con estilo"
+  },
+  {
+    src: "/src/assets/mico2.png",
+    title: "Promoción Especial 2",
+    description: "Descuentos limitados para ti"
+  },
+  {
+    src: "/src/assets/mico3.png",
+    title: "Promoción Especial 3",
+    description: "Lo mejor en personalización"
+  },
+  {
+    src: "/src/assets/mico4.png",
+    title: "Promoción Especial 4",
+    description: "No te lo pierdas"
+  },
+];
+
+const MainBannerCarousel = () => {
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 6000,
+    arrows: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dotsClass: "slick-dots custom-dots",
+    afterChange: (index) => setCurrentSlide(index),
+  };
+
+  return (
+    <Box sx={{ maxWidth: "100%", mb: 4, position: "relative" }}>
+      <style>
+        {`
+          @keyframes fadeSlideIn {
+            0% {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .custom-dots {
+            position: absolute;
+            bottom: 15px;
+            right: 10px;
+            left: auto;
+            display: flex !important;
+            justify-content: flex-end;
+            gap: 0px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            z-index: 10;
+          }
+          .custom-dots li button:before {
+            font-size: 10px;
+            color: white;
+            opacity: 0.7;
+          }
+          .custom-dots li.slick-active button:before {
+            opacity: 1;
+            color: white;
+          }
+          .overlay {
+            /* styles replaced by sx prop in Box below */
+          }
+          .overlay-text {
+            animation: fadeSlideIn 0.6s ease forwards;
+            font-weight: 700;
+            font-size: 1.8rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+          }
+        `}
+      </style>
+      <Slider {...settings}>
+        {banners.map((banner, i) => (
+          <Box key={i} sx={{ position: "relative" }}>
+            <Box
+              component="img"
+              src={banner.src}
+              alt={`Banner ${i + 1}`}
+              sx={{
+                width: "100%",
+                height: { xs: 200, sm: 300, md: 400 },
+                objectFit: "cover",
+                borderRadius: 2,
+              }}
+            />
+            <Box
+              className="overlay"
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                borderRadius: 2,
+                background: 'linear-gradient(30deg,rgba(0, 0, 0, 0.75) 5%, rgba(87, 199, 133, 0) 55%)',
+                display: 'flex',
+                alignItems: 'flex-end',
+                paddingLeft: 2,
+                paddingBottom: 2,
+              }}
+            >
+              {currentSlide === i && (
+                <Box className="overlay-text">
+                  <div>{banner.title}</div>
+                  <Typography variant="body2" sx={{ opacity: 0.85, fontWeight: 400 }}>
+                    {banner.description}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Box>
+        ))}
+      </Slider>
+    </Box>
+  );
+};
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -45,9 +178,9 @@ const Home = () => {
         mt: '15px',
         mb: '30px',
         width: '100%',
-        px: 18
       }}
     >
+      <MainBannerCarousel />
       <HighlightTitle />
 
       {products.length > 0 ? (

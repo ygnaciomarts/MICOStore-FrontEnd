@@ -79,7 +79,7 @@ const AdminProducts = () => {
     };
 
     return (
-        <div style={{ padding: "2rem" }}>
+        <div>
             <Typography variant="h6" gutterBottom sx={{ color: '#fff', marginBottom: '20px', fontWeight: 'bold' }}>
                 Admin Products
             </Typography>

@@ -14,10 +14,15 @@ import {
   Snackbar,
   Alert,
   InputAdornment,
+  Divider,
 } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Person from "@mui/icons-material/Person";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import StoreIcon from '@mui/icons-material/Store';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useState, useContext, useEffect } from "react";
 import MicoLogo from '../assets/mico-letras.png';
 import { AuthContext } from '../AuthContext';
@@ -25,12 +30,34 @@ import { useNavigate } from "react-router-dom";
 import QuickOffersSlider from "./QuickOfferSlider";
 import Footer from "./Footer";
 import { AccountCircle } from "@mui/icons-material";
-import { SearchCheck, Search, User, ShoppingBag, ShoppingCart } from "lucide-react";
+import { SearchCheck, Search, User, ShoppingBag, ShoppingCart, LogOut, Cog } from "lucide-react";
 
 const MainLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const isMediumScreen = useMediaQuery("(max-width:960px)");
+  const theme = useTheme();
+
+  const isXs = useMediaQuery(theme.breakpoints.up('xs'));
+  const isSm = useMediaQuery(theme.breakpoints.up('sm'));
+  const isMd = useMediaQuery(theme.breakpoints.up('md'));
+  const isLg = useMediaQuery(theme.breakpoints.up('lg'));
+  const isXl = useMediaQuery(theme.breakpoints.up('xl'));
+
+  const horizontalPaddingValues = {
+    xs: 3,
+    sm: 8.5,
+    md: 12,
+    lg: 16,
+    xl: 24
+  };
+
+  let horizontalPadding = horizontalPaddingValues.xs;
+  if (isSm) horizontalPadding = horizontalPaddingValues.sm;
+  if (isMd) horizontalPadding = horizontalPaddingValues.md;
+  if (isLg) horizontalPadding = horizontalPaddingValues.lg;
+  if (isXl) horizontalPadding = horizontalPaddingValues.xl;
+
   const { user, sessionExpired, clearSessionExpired, logout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
@@ -68,17 +95,12 @@ const MainLayout = () => {
   }, [sessionExpired, clearSessionExpired, logout, navigate]);
 
   const handleLogout = () => {
+    setAnchorEl(null);
     logout();
     navigate('/login');
   };
 
-  const handleAdmin = () => {
-    navigate('/admin/dashboard');
-  };
-
-  const handleProducts = () => {
-    navigate('/admin/products');
-  };
+  const isAdmin = user?.roles?.includes('ADMIN');
 
   const userButton = user?.username ? (
     <>
@@ -100,9 +122,19 @@ const MainLayout = () => {
           }
         }}
       >
-        <MenuItem dense onClick={handleAdmin}>Admin tools</MenuItem>
-        <MenuItem dense onClick={handleProducts}>Product tools</MenuItem>
-        <MenuItem dense onClick={handleLogout}>Cerrar sesión</MenuItem>
+        {isAdmin && (
+          <Box>
+            <MenuItem dense onClick={() => { setAnchorEl(null); navigate('/admin'); }} sx={{ gap: 1 }}>
+              <Cog size={20} />
+              Admin dashboard
+            </MenuItem>
+            <Divider />
+          </Box>
+        )}
+        <MenuItem dense onClick={handleLogout} sx={{ gap: 1 }}>
+        <LogOut size={20} />
+          Cerrar sesión
+        </MenuItem>
       </Menu>
     </>
   ) : (
@@ -141,7 +173,7 @@ const MainLayout = () => {
         }}
       >
         {!isSmallScreen && (
-          <Box sx={{ position: 'absolute', left: 180, maxWidth: '250px', width: isMediumScreen ? '10%' : '20%' }}>
+          <Box sx={{ position: 'absolute', left: theme.spacing(horizontalPadding), maxWidth: '250px', width: isMediumScreen ? '10%' : '20%' }}>
             <TextField
               variant="outlined"
               placeholder="Buscar productos"
@@ -177,7 +209,7 @@ const MainLayout = () => {
           />
         </Box>
 
-        <Box sx={{ position: 'absolute', right: 180, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ position: 'absolute', right: theme.spacing(horizontalPadding), display: 'flex', alignItems: 'center', gap: 2 }}>
           {isSmallScreen && (
             <IconButton sx={{ color: '#fff', fontSize: 'large' }}>
               <SearchIcon fontSize="large" />
@@ -209,11 +241,18 @@ const MainLayout = () => {
       */}
 
       <Box
-        component="main"
         sx={{
           flexGrow: 1,
-          padding: "2rem",
-          minHeight: 0,
+          mt: '15px',
+          mb: '30px',
+          width: '100%',
+          px: {
+            xs: 2,
+            sm: 4,
+            md: 8,
+            lg: 12,
+            xl: 20
+          }
         }}
       >
         <Outlet />

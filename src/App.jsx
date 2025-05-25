@@ -9,6 +9,7 @@ import MainLayout from '../src/components/MainLayout.jsx';
 import AdminUsers from './views/admin/Dashboard';
 import AdminProducts from './views/admin/Products';
 import useTokenValidation from './hooks/UseTokenValidation.js';
+import AdminDashboard from './views/admin/Dashboard';
 
 function App() {
   useTokenValidation();
@@ -21,7 +22,8 @@ function App() {
           <Route path="/register" element={<RegisterView />} />
           <Route path="/" element={<HomeView />} />
           <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/admin/dashboard" element={<AdminUsers />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/products" element={<AdminProducts />} />
         </Route>
       </Routes>
