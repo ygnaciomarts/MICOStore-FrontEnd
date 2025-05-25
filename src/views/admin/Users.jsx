@@ -22,7 +22,7 @@ const AdminUsers = () => {
 
     const fetchUsers = async () => {
         try {
-            const data = await authFetch("/admin/users");
+            const data = await authFetch(`${__API__}/admin/users`);
             setUsers(data);
             console.log(data);
         } catch (err) {
@@ -46,7 +46,7 @@ const AdminUsers = () => {
 
     const handleSave = async () => {
         console.log(token);
-        await authFetch(`/admin/users/${selectedUser.id}`, {
+        await authFetch(`${__API__}/admin/users/${selectedUser.id}`, {
             method: "PUT",
             body: JSON.stringify(selectedUser),
         });
@@ -55,7 +55,7 @@ const AdminUsers = () => {
     };
 
     const handleDelete = async (id) => {
-        await authFetch(`/admin/users/${id}`, {
+        await authFetch(`${__API__}/admin/users/${id}`, {
             method: "DELETE",
         });
         fetchUsers();

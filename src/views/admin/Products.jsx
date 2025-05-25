@@ -26,7 +26,7 @@ const AdminProducts = () => {
 
     const fetchProducts = async () => {
         try {
-            const data = await authFetch("/api/products");
+            const data = await authFetch(`${__API__}/api/products`);
             setProducts(data);
         } catch (err) {
             console.error("Error fetching products", err);
@@ -61,8 +61,8 @@ const AdminProducts = () => {
     const handleSave = async () => {
         const method = selectedProduct.id ? "PUT" : "POST";
         const url = selectedProduct.id
-            ? `/api/products/${selectedProduct.id}`
-            : `/api/products`;
+            ? `${__API__}/api/products/${selectedProduct.id}`
+            : `${__API__}/api/products`;
         await authFetch(url, {
             method,
             body: JSON.stringify(selectedProduct),
@@ -72,7 +72,7 @@ const AdminProducts = () => {
     };
 
     const handleDelete = async (id) => {
-        await authFetch(`/api/products/${id}`, {
+        await authFetch(`${__API__}/api/products/${id}`, {
             method: "DELETE",
         });
         fetchProducts();

@@ -1,4 +1,5 @@
 import React from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Box, Tabs, Tab, Typography, Card, CardContent, Button, Modal, TextField, IconButton, Stack, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
@@ -26,6 +27,7 @@ function TabPanel(props) {
 const AdminDashboard = () => {
     const [tabIndex, setTabIndex] = React.useState(0);
     const [banners, setBanners] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
 
     const fallbackBanners = [
         {
@@ -55,6 +57,7 @@ const AdminDashboard = () => {
     ];
 
     React.useEffect(() => {
+        setLoading(true);
         fetch('/api/banners')
             .then(res => res.json())
             .then(data => {
@@ -66,10 +69,12 @@ const AdminDashboard = () => {
                     console.warn('Formato inesperado, usando datos por defecto.');
                     setBanners(fallbackBanners);
                 }
+                setLoading(false);
             })
             .catch(err => {
                 console.error('Error cargando banners', err);
                 setBanners(fallbackBanners);
+                setLoading(false);
             });
     }, []);
 
@@ -190,101 +195,109 @@ const AdminDashboard = () => {
                     <Tab label="Usuarios" />
                 </Tabs>
                 <TabPanel value={tabIndex} index={0}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                      <Box>
-                        <Typography variant="h6" color="black">Banner principal</Typography>
-                        <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-                          Arrastra para reordenar los banners en la página principal
-                        </Typography>
-                      </Box>
-                      <Button
-                        variant="contained"
-                        color="inherit"
-                        size="small"
-                        onClick={() => handleOpenModal(null)}
-                      >
-                        <Plus size={16} style={{ marginRight: 6 }} />
-                        Crear nuevo banner
-                      </Button>
-                    </Box>
-                    <Box mt={3}>
-                        {banners.length === 0 ? (
-                            <Typography color="text.secondary">No hay ofertas cargadas.</Typography>
-                        ) : (
-                            <DragDropContext onDragEnd={handleDragEnd}>
-                                <Droppable droppableId="banners">
-                                    {(provided) => (
-                                        <Box ref={provided.innerRef} {...provided.droppableProps}>
-                                            {banners.map((banner, index) => (
-                                                <Draggable key={banner.id} draggableId={banner.id.toString()} index={index}>
-                                                    {(provided) => (
-                                                        <Box
-                                                          ref={provided.innerRef}
-                                                          {...provided.draggableProps}
-                                                          {...provided.dragHandleProps}
-                                                          sx={{
-                                                            mb: 2,
-                                                            p: 2,
-                                                            border: '1px solid #ccc',
-                                                            borderRadius: 2,
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'space-between',
-                                                            bgcolor: '#fafafa',
-                                                            position: 'relative'
-                                                          }}
-                                                        >
-                                                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                                            <Typography variant="h6" sx={{ mr: 2, ml: 2 }}>{index + 1}</Typography>
-                                                            <Box
-                                                              sx={{
-                                                                width: 110,
-                                                                height: 110,
-                                                                boxShadow: 1,
-                                                                borderRadius: 2,
-                                                                overflow: 'hidden',
-                                                                flexShrink: 0,
-                                                                backgroundColor: 'white'
-                                                              }}
-                                                            >
-                                                              <Box
-                                                                component="img"
-                                                                src={banner.src}
-                                                                alt={banner.title}
-                                                                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                              />
-                                                            </Box>
-                                                            <Box>
-                                                              <Typography variant="subtitle1" color="me referia text.primary" sx={{ fontWeight: 'bold' }}>
-                                                                Título: {banner.title}
-                                                              </Typography>
-                                                              <Typography variant="body2" color="text.secondary">
-                                                                Descripción: {banner.description}
-                                                              </Typography>
-                                                            </Box>
-                                                          </Box>
-                                                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                                            <Button variant="outlined" color="inherit" size="small" disableElevation onClick={() => handleOpenModal(banner)}>
-                                                              <Edit size={16} style={{ marginRight: 6 }} />
-                                                              Editar
-                                                            </Button>
-                                                            <Button variant="contained" color="error" size="small" disableElevation onClick={() => handleOpenDeleteDialog(banner)}>
-                                                              <Trash2 size={16} style={{ marginRight: 6 }} />
-                                                              Eliminar
-                                                            </Button>
-                                                            <DragIndicatorIcon sx={{ color: '#999' }} />
-                                                          </Box>
-                                                        </Box>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                            {provided.placeholder}
-                                        </Box>
-                                    )}
-                                </Droppable>
-                            </DragDropContext>
-                        )}
-                    </Box>
+                    {loading ? (
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 260 }}>
+                            <CircularProgress />
+                        </Box>
+                    ) : (
+                        <>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                              <Box>
+                                <Typography variant="h6" color="black">Banner principal</Typography>
+                                <Typography color="text.secondary" sx={{ mt: 0.5 }}>
+                                  Arrastra para reordenar los banners en la página principal
+                                </Typography>
+                              </Box>
+                              <Button
+                                variant="contained"
+                                color="inherit"
+                                size="small"
+                                onClick={() => handleOpenModal(null)}
+                              >
+                                <Plus size={16} style={{ marginRight: 6 }} />
+                                Crear nuevo banner
+                              </Button>
+                            </Box>
+                            <Box mt={3}>
+                                {banners.length === 0 ? (
+                                    <Typography color="text.secondary">No hay ofertas cargadas.</Typography>
+                                ) : (
+                                    <DragDropContext onDragEnd={handleDragEnd}>
+                                        <Droppable droppableId="banners">
+                                            {(provided) => (
+                                                <Box ref={provided.innerRef} {...provided.droppableProps}>
+                                                    {banners.map((banner, index) => (
+                                                        <Draggable key={banner.id} draggableId={banner.id.toString()} index={index}>
+                                                            {(provided) => (
+                                                                <Box
+                                                                  ref={provided.innerRef}
+                                                                  {...provided.draggableProps}
+                                                                  {...provided.dragHandleProps}
+                                                                  sx={{
+                                                                    mb: 2,
+                                                                    p: 2,
+                                                                    border: '1px solid #ccc',
+                                                                    borderRadius: 2,
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'space-between',
+                                                                    bgcolor: '#fafafa',
+                                                                    position: 'relative'
+                                                                  }}
+                                                                >
+                                                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                                                    <Typography variant="h6" sx={{ mr: 2, ml: 2 }}>{index + 1}</Typography>
+                                                                    <Box
+                                                                      sx={{
+                                                                        width: 110,
+                                                                        height: 110,
+                                                                        boxShadow: 1,
+                                                                        borderRadius: 2,
+                                                                        overflow: 'hidden',
+                                                                        flexShrink: 0,
+                                                                        backgroundColor: 'white'
+                                                                      }}
+                                                                    >
+                                                                      <Box
+                                                                        component="img"
+                                                                        src={banner.src}
+                                                                        alt={banner.title}
+                                                                        sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                                      />
+                                                                    </Box>
+                                                                    <Box>
+                                                                      <Typography variant="subtitle1" color="me referia text.primary" sx={{ fontWeight: 'bold' }}>
+                                                                        Título: {banner.title}
+                                                                      </Typography>
+                                                                      <Typography variant="body2" color="text.secondary">
+                                                                        Descripción: {banner.description}
+                                                                      </Typography>
+                                                                    </Box>
+                                                                  </Box>
+                                                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                                    <Button variant="outlined" color="inherit" size="small" disableElevation onClick={() => handleOpenModal(banner)}>
+                                                                      <Edit size={16} style={{ marginRight: 6 }} />
+                                                                      Editar
+                                                                    </Button>
+                                                                    <Button variant="contained" color="error" size="small" disableElevation onClick={() => handleOpenDeleteDialog(banner)}>
+                                                                      <Trash2 size={16} style={{ marginRight: 6 }} />
+                                                                      Eliminar
+                                                                    </Button>
+                                                                    <DragIndicatorIcon sx={{ color: '#999' }} />
+                                                                  </Box>
+                                                                </Box>
+                                                            )}
+                                                        </Draggable>
+                                                    ))}
+                                                    {provided.placeholder}
+                                                </Box>
+                                            )}
+                                        </Droppable>
+                                    </DragDropContext>
+                                )}
+                            </Box>
+                        </>
+                    )}
 
                     <Modal
                         open={openModal}
