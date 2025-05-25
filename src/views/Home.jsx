@@ -47,7 +47,7 @@ const MainBannerCarousel = () => {
     dots: true,
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 10000,
     arrows: false,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -59,14 +59,14 @@ const MainBannerCarousel = () => {
     <Box sx={{ maxWidth: "100%", mb: 4, position: "relative" }}>
       <style>
         {`
-          @keyframes fadeSlideIn {
+          @keyframes slideFromLeftFade {
             0% {
               opacity: 0;
-              transform: translateY(10px);
+              transform: translateX(-15px);
             }
             100% {
               opacity: 1;
-              transform: translateY(0);
+              transform: translateX(0);
             }
           }
           .custom-dots {
@@ -91,11 +91,8 @@ const MainBannerCarousel = () => {
             opacity: 1;
             color: white;
           }
-          .overlay {
-            /* styles replaced by sx prop in Box below */
-          }
           .overlay-text {
-            animation: fadeSlideIn 0.6s ease forwards;
+            animation: slideFromLeftFade 0.7s ease forwards;
             font-weight: 700;
             font-size: 1.8rem;
             padding: 8px 12px;
@@ -131,6 +128,8 @@ const MainBannerCarousel = () => {
                 alignItems: 'flex-end',
                 paddingLeft: 2,
                 paddingBottom: 2,
+                opacity: currentSlide === i ? 1 : 0,
+                transition: 'opacity 0.6s ease-in-out',
               }}
             >
               {currentSlide === i && (
