@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Box } from '@mui/material';
 
-const ProductCarousel = ({ products }) => {
+const ProductCarousel = ({ products, loading }) => {
     const settings = {
         infinite: true,
         speed: 500,
@@ -44,7 +44,7 @@ const ProductCarousel = ({ products }) => {
         <Slider {...settings}>
             {products.map(product => (
                 <Box key={product.id} sx={{ p: 1 }}>
-                    <ProductCard product={product} />
+                    <ProductCard product={product} loading={loading} />
                 </Box>
             ))}
         </Slider>

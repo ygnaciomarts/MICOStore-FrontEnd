@@ -1,8 +1,47 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, Typography, CardMedia, Button, Box } from '@mui/material';
+import { Card, CardContent, Typography, CardMedia, Button, Box, Skeleton } from '@mui/material';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, loading }) => {
+  if (loading) {
+    return (
+      <Box>
+        <Card sx={{ maxWidth: 320, width: '100%', borderRadius: 2, boxShadow: 3, position: 'relative' }}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              borderRadius: '50%',
+              width: 60,
+              height: 60,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1,
+              flexDirection: 'column',
+              textAlign: 'center',
+              padding: '4px',
+            }}
+          >
+            <Skeleton variant="circular" width={50} height={50} />
+          </Box>
+          <Skeleton variant="rectangular" width="100%" height={210} />
+        </Card>
+        <Skeleton
+          variant="text"
+          width="80%"
+          sx={{
+            fontSize: '18px',
+            mt: 1,
+            fontWeight: 700,
+            bgcolor: 'white'
+          }}
+        />
+      </Box>
+    );
+  }
+
   return (
     <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <Box>
