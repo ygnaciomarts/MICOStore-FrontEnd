@@ -16,25 +16,29 @@ import { AccountBoxSharp, Person } from '@mui/icons-material';
 import HighlightTitle from '../util/HighlightTitle';
 import ProductCarousel from '../components/ProductCarousel';
 import Slider from "react-slick";
+import mico1 from '../assets/mico1.png';
+import mico2 from '../assets/mico2.png';
+import mico3 from '../assets/mico3.png';
+import mico4 from '../assets/mico4.png';
 
 const banners = [
   {
-    src: "/assets/mico1.png",
+    src: mico1,
     title: "Tu tienda de confianza",
     description: "Compra rápido y con estilo"
   },
   {
-    src: "/assets/mico2.png",
+    src: mico2,
     title: "Personaliza tus prendas",
     description: "Descuentos limitados para ti"
   },
   {
-    src: "/assets/mico3.png",
+    src: mico3,
     title: "Promoción Especial 3",
     description: "Lo mejor en personalización"
   },
   {
-    src: "/assets/mico4.png",
+    src: mico4,
     title: "Promoción Especial 4",
     description: "No te lo pierdas"
   },
