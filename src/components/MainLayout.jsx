@@ -244,8 +244,9 @@ const MainLayout = () => {
         <Box
           sx={{
             width: '100%',
-            backgroundColor: '#fff',
+            backgroundColor: '#222',
             py: 1,
+            pt: 0,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -270,13 +271,13 @@ const MainLayout = () => {
               justifyContent: 'center',
             }}
           >
-            <Button variant="text" sx={{ color: '#000' }} endIcon={<ChevronDown />}>
+            <Button variant="text" sx={{ color: '#fff' }} endIcon={<ChevronDown />}>
               Categoría 1
             </Button>
-            <Button variant="text" sx={{ color: '#000' }} endIcon={<ChevronDown />}>
+            <Button variant="text" sx={{ color: '#fff' }} endIcon={<ChevronDown />}>
               Categoría 2
             </Button>
-            <Button variant="text" sx={{ color: '#000' }} endIcon={<ChevronDown />}>
+            <Button variant="text" sx={{ color: '#fff' }} endIcon={<ChevronDown />}>
               Categoría 3
             </Button>
           </Box>
