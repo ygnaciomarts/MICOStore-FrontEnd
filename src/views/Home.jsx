@@ -19,22 +19,22 @@ import Slider from "react-slick";
 
 const banners = [
   {
-    src: "/src/assets/mico1.png",
+    src: "/assets/mico1.png",
     title: "Tu tienda de confianza",
     description: "Compra rápido y con estilo"
   },
   {
-    src: "/src/assets/mico2.png",
+    src: "/assets/mico2.png",
     title: "Personaliza tus prendas",
     description: "Descuentos limitados para ti"
   },
   {
-    src: "/src/assets/mico3.png",
+    src: "/assets/mico3.png",
     title: "Promoción Especial 3",
     description: "Lo mejor en personalización"
   },
   {
-    src: "/src/assets/mico4.png",
+    src: "/assets/mico4.png",
     title: "Promoción Especial 4",
     description: "No te lo pierdas"
   },
