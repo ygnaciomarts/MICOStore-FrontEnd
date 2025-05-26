@@ -30,7 +30,7 @@ import { useNavigate } from "react-router-dom";
 import QuickOffersSlider from "./QuickOfferSlider";
 import Footer from "./Footer";
 import { AccountCircle } from "@mui/icons-material";
-import { SearchCheck, Search, User, ShoppingBag, ShoppingCart, LogOut, Cog } from "lucide-react";
+import { SearchCheck, Search, User, ShoppingBag, ShoppingCart, LogOut, Cog, ChevronDown } from "lucide-react";
 
 const MainLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -109,7 +109,7 @@ const MainLayout = () => {
         sx={{ color: '#fff', textTransform: 'none', display: 'flex', alignItems: 'center', gap: 1 }}
       >
         <User />
-        {user?.username}
+        {!isMediumScreen && user?.username}
       </Button>
       <Menu
         anchorEl={anchorEl}
@@ -132,7 +132,7 @@ const MainLayout = () => {
           </Box>
         )}
         <MenuItem dense onClick={handleLogout} sx={{ gap: 1 }}>
-        <LogOut size={20} />
+          <LogOut size={20} />
           Cerrar sesión
         </MenuItem>
       </Menu>
@@ -172,11 +172,11 @@ const MainLayout = () => {
           flexShrink: 0,
         }}
       >
-        {!isSmallScreen && (
-          <Box sx={{ position: 'absolute', left: theme.spacing(horizontalPadding), maxWidth: '250px', width: isMediumScreen ? '10%' : '20%' }}>
+        {!isSmallScreen ? (
+          <Box sx={{ position: 'absolute', left: theme.spacing(horizontalPadding), maxWidth: '250px', width: isMediumScreen ? '15%' : '20%' }}>
             <TextField
               variant="outlined"
-              placeholder="Buscar productos"
+              placeholder="Buscar..."
               sx={{
                 width: '100%',
                 backgroundColor: '#fff',
@@ -192,6 +192,13 @@ const MainLayout = () => {
               }}
             />
           </Box>
+        ) : (
+          <IconButton
+            onClick={() => setMenuOpen(true)}
+            sx={{ position: 'absolute', left: theme.spacing(horizontalPadding), color: '#fff', fontSize: 'large' }}
+          >
+            <MenuIcon />
+          </IconButton>
         )}
 
         <Box
@@ -201,7 +208,7 @@ const MainLayout = () => {
           <img
             src={MicoLogo}
             style={{
-              width: isSmallScreen ? '110px' : isMediumScreen ? '140px' : '170px',
+              width: isSmallScreen ? '130px' : isMediumScreen ? '140px' : '170px',
               filter: 'invert(1)',
               display: 'block'
             }}
@@ -210,14 +217,7 @@ const MainLayout = () => {
         </Box>
 
         <Box sx={{ position: 'absolute', right: theme.spacing(horizontalPadding), display: 'flex', alignItems: 'center', gap: 2 }}>
-          {isSmallScreen && (
-            <IconButton sx={{ color: '#fff', fontSize: 'large' }}>
-              <SearchIcon fontSize="large" />
-            </IconButton>
-          )}
-
           {userButton}
-
           <IconButton onClick={() => setMenuOpen(true)} sx={{ color: '#fff', fontSize: 'large' }}>
             <ShoppingCart />
           </IconButton>
@@ -240,6 +240,50 @@ const MainLayout = () => {
       </Drawer>
       */}
 
+      {!isSmallScreen && (
+        <Box
+          sx={{
+            width: '100%',
+            backgroundColor: '#fff',
+            py: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+            zIndex: 1,
+          }}
+        >
+
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 4,
+              maxWidth: '1600px',
+              width: '100%',
+              px: {
+                xs: 2,
+                sm: 3,
+                md: 4,
+                lg: 6,
+                xl: 8,
+              },
+              justifyContent: 'center',
+            }}
+          >
+            <Button variant="text" sx={{ color: '#000' }} endIcon={<ChevronDown />}>
+              Categoría 1
+            </Button>
+            <Button variant="text" sx={{ color: '#000' }} endIcon={<ChevronDown />}>
+              Categoría 2
+            </Button>
+            <Button variant="text" sx={{ color: '#000' }} endIcon={<ChevronDown />}>
+              Categoría 3
+            </Button>
+          </Box>
+
+        </Box>
+      )}
+
       <Box
         sx={{
           flexGrow: 1,
@@ -251,8 +295,8 @@ const MainLayout = () => {
             sm: 4,
             md: 8,
             lg: 12,
-            xl: 20
-          }
+            xl: 20,
+          },
         }}
       >
         <Outlet />

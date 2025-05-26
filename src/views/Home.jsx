@@ -25,7 +25,7 @@ const banners = [
   },
   {
     src: "/src/assets/mico2.png",
-    title: "Promoción Especial 2",
+    title: "Personaliza tus prendas",
     description: "Descuentos limitados para ti"
   },
   {
@@ -59,20 +59,20 @@ const MainBannerCarousel = () => {
     <Box sx={{ maxWidth: "100%", mb: 4, position: "relative" }}>
       <style>
         {`
-          @keyframes slideFromLeftFade {
+          @keyframes fadeSlideIn {
             0% {
               opacity: 0;
-              transform: translateX(-15px);
+              transform: translateY(10px);
             }
             100% {
               opacity: 1;
-              transform: translateX(0);
+              transform: translateY(0);
             }
           }
           .custom-dots {
             position: absolute;
-            bottom: 15px;
-            right: 10px;
+            bottom: 20px;
+            right: 15px;
             left: auto;
             display: flex !important;
             justify-content: flex-end;
@@ -92,8 +92,8 @@ const MainBannerCarousel = () => {
             color: white;
           }
           .overlay-text {
-            animation: slideFromLeftFade 0.7s ease forwards;
-            font-weight: 700;
+            animation: fadeSlideIn 0.6s ease forwards;
+            font-weight: 600;
             font-size: 1.8rem;
             padding: 8px 12px;
             border-radius: 6px;
@@ -134,8 +134,10 @@ const MainBannerCarousel = () => {
             >
               {currentSlide === i && (
                 <Box className="overlay-text">
-                  <div>{banner.title}</div>
-                  <Typography variant="body2" sx={{ opacity: 0.85, fontWeight: 400 }}>
+                  <Typography variant="h4" sx={{ opacity: 0.85, fontWeight: 600 }}>
+                    {banner.title}
+                  </Typography>
+                  <Typography variant="body1" sx={{ opacity: 0.85, fontWeight: 400 }}>
                     {banner.description}
                   </Typography>
                 </Box>
@@ -180,8 +182,27 @@ const Home = () => {
       }}
     >
       <MainBannerCarousel />
-      <HighlightTitle />
 
+      <HighlightTitle />
+      {products.length > 0 ? (
+        <Box sx={{ maxWidth: '100%', margin: '0 auto' }}>
+          <ProductCarousel products={products} />
+        </Box>
+      ) : (
+        <Grid container spacing={2}>
+          {[1, 2, 3, 4].map((n) => (
+            <Grid item sm={6} md={3} key={n}>
+              <Box sx={{ backgroundColor: '#fff', borderRadius: 2, p: 2 }}>
+                <Skeleton variant="rectangular" height={140} />
+                <Skeleton variant="text" sx={{ mt: 1 }} />
+                <Skeleton variant="text" width="60%" />
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
+      <HighlightTitle />
       {products.length > 0 ? (
         <Box sx={{ maxWidth: '100%', margin: '0 auto' }}>
           <ProductCarousel products={products} />
